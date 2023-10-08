@@ -47,14 +47,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tabProcedura = new System.Windows.Forms.TabPage();
-            this.buttonProcedura = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.dataGridViewProcedura = new System.Windows.Forms.DataGridView();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.Coupon_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Order_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonProcedura = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabCoupon.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCoupon)).BeginInit();
@@ -68,6 +66,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewViborka)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabProcedura.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProcedura)).BeginInit();
             this.SuspendLayout();
@@ -111,8 +110,6 @@
             // dataGridViewCoupon
             // 
             this.dataGridViewCoupon.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewCoupon.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Coupon_ID});
             this.dataGridViewCoupon.Location = new System.Drawing.Point(6, 42);
             this.dataGridViewCoupon.Name = "dataGridViewCoupon";
             this.dataGridViewCoupon.RowHeadersWidth = 51;
@@ -145,8 +142,6 @@
             // dataGridViewOrder
             // 
             this.dataGridViewOrder.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewOrder.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Order_ID});
             this.dataGridViewOrder.Location = new System.Drawing.Point(6, 33);
             this.dataGridViewOrder.Name = "dataGridViewOrder";
             this.dataGridViewOrder.RowHeadersWidth = 51;
@@ -269,10 +264,10 @@
             // 
             // tabProcedura
             // 
-            this.tabProcedura.Controls.Add(this.comboBox2);
             this.tabProcedura.Controls.Add(this.buttonProcedura);
             this.tabProcedura.Controls.Add(this.label3);
             this.tabProcedura.Controls.Add(this.label2);
+            this.tabProcedura.Controls.Add(this.numericUpDown2);
             this.tabProcedura.Controls.Add(this.numericUpDown1);
             this.tabProcedura.Controls.Add(this.dataGridViewProcedura);
             this.tabProcedura.Location = new System.Drawing.Point(4, 25);
@@ -282,17 +277,6 @@
             this.tabProcedura.TabIndex = 5;
             this.tabProcedura.Text = "Процедура";
             this.tabProcedura.UseVisualStyleBackColor = true;
-            // 
-            // buttonProcedura
-            // 
-            this.buttonProcedura.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.buttonProcedura.Location = new System.Drawing.Point(519, 16);
-            this.buttonProcedura.Name = "buttonProcedura";
-            this.buttonProcedura.Size = new System.Drawing.Size(140, 23);
-            this.buttonProcedura.TabIndex = 5;
-            this.buttonProcedura.Text = "Найти";
-            this.buttonProcedura.UseVisualStyleBackColor = true;
-            this.buttonProcedura.Click += new System.EventHandler(this.buttonProcedura_Click);
             // 
             // label3
             // 
@@ -311,6 +295,13 @@
             this.label2.Size = new System.Drawing.Size(48, 16);
             this.label2.TabIndex = 3;
             this.label2.Text = "Месяц";
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(117, 17);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDown2.TabIndex = 2;
             // 
             // numericUpDown1
             // 
@@ -343,44 +334,16 @@
             this.dataGridViewProcedura.Size = new System.Drawing.Size(812, 420);
             this.dataGridViewProcedura.TabIndex = 0;
             // 
-            // comboBox2
+            // buttonProcedura
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12"});
-            this.comboBox2.Location = new System.Drawing.Point(125, 17);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(111, 24);
-            this.comboBox2.TabIndex = 6;
-            // 
-            // Coupon_ID
-            // 
-            this.Coupon_ID.DataPropertyName = "ID";
-            this.Coupon_ID.HeaderText = "ID";
-            this.Coupon_ID.MinimumWidth = 6;
-            this.Coupon_ID.Name = "Coupon_ID";
-            this.Coupon_ID.ReadOnly = true;
-            this.Coupon_ID.Width = 125;
-            // 
-            // Order_ID
-            // 
-            this.Order_ID.DataPropertyName = "ID";
-            this.Order_ID.HeaderText = "ID";
-            this.Order_ID.MinimumWidth = 6;
-            this.Order_ID.Name = "Order_ID";
-            this.Order_ID.ReadOnly = true;
-            this.Order_ID.Width = 125;
+            this.buttonProcedura.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.buttonProcedura.Location = new System.Drawing.Point(519, 16);
+            this.buttonProcedura.Name = "buttonProcedura";
+            this.buttonProcedura.Size = new System.Drawing.Size(140, 23);
+            this.buttonProcedura.TabIndex = 5;
+            this.buttonProcedura.Text = "Найти";
+            this.buttonProcedura.UseVisualStyleBackColor = true;
+            this.buttonProcedura.Click += new System.EventHandler(this.buttonProcedura_Click);
             // 
             // Form1
             // 
@@ -405,6 +368,7 @@
             this.groupBox1.PerformLayout();
             this.tabProcedura.ResumeLayout(false);
             this.tabProcedura.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProcedura)).EndInit();
             this.ResumeLayout(false);
@@ -434,12 +398,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Наименование;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.DataGridView dataGridViewProcedura;
         private System.Windows.Forms.Button buttonProcedura;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Coupon_ID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Order_ID;
     }
 }
 
