@@ -33,8 +33,15 @@ namespace Lab01
            connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
 
             // Создание объектов SqlDataAdapter.
-            orderAdapter = new SqlDataAdapter("Select * from Покупка", connectionString);
-            couponAdapter = new SqlDataAdapter("Select * from Купон", connectionString);
+            orderAdapter = new SqlDataAdapter("Select Покупка.ID, Покупка.[Стоимость покупки], Покупка.Дата, Пользователь.Логин, " +
+                "Купон.Наименование from Покупка INNER JOIN Пользователь ON Покупка.[Код пользователя] = Пользователь.ID" +
+                " INNER JOIN Купон ON Покупка.[Код купона] = Купон.ID", connectionString);
+            
+            couponAdapter = new SqlDataAdapter("Select Купон.ID, Купон.Наименование, [Вид купона].Наименование," +
+                " Фирма.Наименование, Купон.[Срок действия], Купон.[Полная стоимость товара], Купон.[Величина скидки], " +
+                "Купон.[Стоимость купона] from Купон INNER JOIN Фирма ON Купон.[Код фирмы] = Фирма.ID" +
+                " INNER JOIN [Вид купона] ON Купон.[Код вида купона] = [Вид купона].ID", connectionString);
+            
             userAdapter = new SqlDataAdapter("Select * from Пользователь", connectionString);
             firmAdapter = new SqlDataAdapter("Select * from Фирма", connectionString);
 
@@ -56,6 +63,7 @@ namespace Lab01
             dataGridViewFirm.DataSource = dataSet.Tables["Фирма"];
             dataGridViewViborka.DataSource = dataSet.Tables["Купон"];
 
+            
             FillCouponCombobox();
         }
 
@@ -75,12 +83,90 @@ namespace Lab01
 
         private void buttonOrder_Click(object sender, EventArgs e)
         {
-            orderAdapter.Update(dataSet, "Покупка");
+            if (dataGridViewOrder.SelectedRows.Count > 0)
+            {
+                DataGridViewRow selectedRow = dataGridViewOrder.SelectedRows[0];
+
+                string login = selectedRow.Cells["Логин"].Value.ToString();
+                string couponName = selectedRow.Cells["Наименование"].Value.ToString();
+                string date = selectedRow.Cells["Дата"].Value.ToString();
+                string cost = selectedRow.Cells["Стоимость покупки"].Value.ToString();
+
+                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                {
+                    sqlConnection.Open();
+
+                    SqlCommand userCommand = new SqlCommand("SELECT ID FROM Пользователь WHERE Логин = @paramLogin", sqlConnection);
+                    userCommand.Parameters.AddWithValue("@paramLogin", login);
+                    int userId = Convert.ToInt32(userCommand.ExecuteScalar());
+
+                    SqlCommand couponCommand = new SqlCommand("SELECT ID FROM Купон WHERE Наименование = @paramCouponName", sqlConnection);
+                    couponCommand.Parameters.AddWithValue("@paramCouponName", couponName);
+                    int couponId = Convert.ToInt32(couponCommand.ExecuteScalar());
+
+                    DateTime orderDate = Convert.ToDateTime(date);
+                    int orderCost = Convert.ToInt32(cost);
+
+                    SqlCommand updateCommand = new SqlCommand("INSERT INTO Покупка (Дата, [Стоимость покупки], [Код пользователя], [Код купона])" +
+                        " VALUES (@orderDate, @orderCost, @userId, @couponId)", sqlConnection);
+
+                    updateCommand.Parameters.AddWithValue("@orderDate", orderDate);
+                    updateCommand.Parameters.AddWithValue("@orderCost", orderCost);
+                    updateCommand.Parameters.AddWithValue("@userId", userId);
+                    updateCommand.Parameters.AddWithValue("@couponId", couponId);
+                    updateCommand.ExecuteNonQuery();
+                }
+            }
+            dataGridViewCoupon.Refresh();
         }
 
         private void buttonCoupon_Click(object sender, EventArgs e)
         {
-            couponAdapter.Update(dataSet, "Купон");
+            if (dataGridViewCoupon.SelectedRows.Count > 0)
+            {
+                DataGridViewRow selectedRow = dataGridViewCoupon.SelectedRows[0];
+
+                string vid = selectedRow.Cells["Наименование1"].Value.ToString();
+                string firmName = selectedRow.Cells["Наименование2"].Value.ToString();
+                string couponName = selectedRow.Cells["Наименование"].Value.ToString();
+                string date = selectedRow.Cells["Срок действия"].Value.ToString();
+
+                string fullCost = selectedRow.Cells["Полная стоимость товара"].Value.ToString();
+                string saleCost = selectedRow.Cells["Величина скидки"].Value.ToString();
+                string couponCost = selectedRow.Cells["Стоимость купона"].Value.ToString();
+
+                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                {
+                    sqlConnection.Open();
+
+                    SqlCommand userCommand = new SqlCommand("SELECT ID FROM [Вид купона] WHERE Наименование = @paramVid", sqlConnection);
+                    userCommand.Parameters.AddWithValue("@paramVid", vid);
+                    int couponVid = Convert.ToInt32(userCommand.ExecuteScalar());
+
+                    SqlCommand couponCommand = new SqlCommand("SELECT ID FROM Фирма WHERE Наименование = @paramFirmName", sqlConnection);
+                    couponCommand.Parameters.AddWithValue("@paramFirmName", firmName);
+                    int firmId = Convert.ToInt32(couponCommand.ExecuteScalar());
+
+                    DateTime orderDate = Convert.ToDateTime(date);
+                    int fullPrice = Convert.ToInt32(fullCost);
+                    int salePrice = Convert.ToInt32(saleCost);
+                    int couponPrice = Convert.ToInt32(couponCost);
+
+                    SqlCommand updateCommand = new SqlCommand("INSERT INTO Купон (Наименование, [Код вида купона], [Код фирмы], " +
+                        "[Срок действия], [Полная стоимость товара], [Величина скидки], [Стоимость купона])" +
+                        " VALUES (@couponName, @couponVid, @firmId, @orderDate, @fullPrice, @salePrice, @couponPrice)", sqlConnection);
+
+                    updateCommand.Parameters.AddWithValue("@orderDate", orderDate);
+                    updateCommand.Parameters.AddWithValue("@couponName", couponName);
+                    updateCommand.Parameters.AddWithValue("@couponVid", couponVid);
+                    updateCommand.Parameters.AddWithValue("firmId", firmId);
+                    updateCommand.Parameters.AddWithValue("@fullPrice", fullPrice);
+                    updateCommand.Parameters.AddWithValue("@salePrice", salePrice);
+                    updateCommand.Parameters.AddWithValue("@couponPrice", couponPrice);
+                    updateCommand.ExecuteNonQuery();
+                }
+            }
+            dataGridViewCoupon.Refresh();
         }
 
         private void buttonViborka_Click(object sender, EventArgs e)
@@ -111,7 +197,7 @@ namespace Lab01
                 sqlAdapter.SelectCommand.Parameters["@year"].Value = numericUpDown1.Value;
 
                 sqlAdapter.SelectCommand.Parameters.Add(new SqlParameter("@month", SqlDbType.Int));
-                sqlAdapter.SelectCommand.Parameters["@month"].Value = numericUpDown2.Value;
+                sqlAdapter.SelectCommand.Parameters["@month"].Value = comboBox2.SelectedItem;
 
                 DataSet dataSet = new DataSet();
                 sqlAdapter.Fill(dataSet, "report2");
